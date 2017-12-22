@@ -5,13 +5,20 @@ using namespace std;
  
 class board
 {
-	int slots;
+	int slots,i,j;
+	char a[100][100];
 	public:
 		int row,col;
 	    board(int x =4, int y =  4)
 	    {
 	    	row = x;
 	    	col = y;
+	    	for(i=0;i<100;i++)
+	    	{
+	    		for(j=0;j<100;j++)
+	    		a[i][j]=' ';
+			}
+	    	
 	    }
 	    
 	    void setSlots()
@@ -25,12 +32,21 @@ class board
 	    	return slots;
 		}
  
-	    void fill()
-	    {
-	    	//fill slot for every player each turn 
-	    	
+	    void fill(int r, int c, char symbol) {
+	    //fill slot for every player each turn
+		
+		a[r][c] = symbol; 
+	    	for(i=0;i<row;i++) {
+	    		cout<<"\t";
+	    	for(j=0;j<col;j++) {
+			cout<<a[i][j]<<"  ";
+	        }
+	    	cout<<"\n\n";
+	       }
 	    	
 	    }
+	    
+	    
  
  
 	};
@@ -62,9 +78,9 @@ class board
 	        cout<<"\tNOte: max 25 players allowed\n"<<endl;
  
 	        do{
-	        	cout<<"Enter player name and symbol for player"<<number+1<<endl;
-	        	cin>>name[number];
-	        	cin>>symbol[number];
+	        	cout<<"Enter player name and symbol for player"<<number<<endl;
+	        	cin>>name[number-1];
+	        	cin>>symbol[number-1];
 	        	cout<<"Any more players? y/n";
 	        	cin>>ch;
 	        	if(ch=='y')
@@ -74,13 +90,18 @@ class board
  
 	        cout<<"\n";
 	        //display details
-	    	for(int i=0;i<=number;i++)
+	    	for(int i=0;i<number;i++)
 	    	{
 	    		cout<<name[i]<<" "<<symbol[i]<<endl;
 	    	}
  
  
 	    }
+	    
+	    char getSymbol(int plyr)
+	    {
+	    	return symbol[plyr];
+		}
 	    
 	    int getNumber()
 	    {
@@ -96,7 +117,7 @@ class board
 	        cout<<"Select col position within "<<totColumn<<endl;
 	        cin>>col;
 	        
-	        system("cls");
+	        //system("cls");
 
 	    }
 	    
@@ -177,29 +198,32 @@ class board
  
 	}; */
 	
-  /*
+  
     class game
     {
-    	int c,r;
+    	int a[100][100],roow,cool;
     public:
     	game()
     	{
-    		r=4;
+    		for(int i =0;i<100;i++)
+    		for(int j = 0;j<100;j++)
+    		a[i][j]=0;
+    		
 		}
-    	int a[100][100];
-    	void setPos()
-    		{
-    			c=getPos();
-			}
-    	void nextPosition()
+    	
+    
+    	void nextPosition(int r,int c) //col specified by the player
     	{
+    		
     		//gives the next possible positions where user can pick 
+    	
     		while(r>=0)
 			{
 				if(a[r][c]!=1)
 				{
 					//fill it with symbol
-					a[r][c] == 1;
+					a[r][c] = 1;
+					roow = r;
 					break;
 				}
 				else
@@ -209,7 +233,13 @@ class board
 			
 				
     	}
- 
+    	
+    	int getRoow()
+    	{
+    		return roow;
+		}
+		
+		
     	void check()
     	{
     		//if 4 of same coin connect, call display func nd stop game
@@ -217,13 +247,13 @@ class board
  
  
     };
-      */
+    
  
 int main()
 {
  
-	 int row,col,slots,totPlayers,t,c,play=0;
-	 
+	 int row,col,slots,totPlayers,possibleRow,t=0,c,play=0;
+	 char s = ' ';
 	 //board
 	 
 	 cout<<"Enter board rows and column!"<<endl;
@@ -238,27 +268,43 @@ int main()
 	 //player
 	 
 	 player p;
+	 p.setCol(col);
 	 p.playerDetails();
 	 totPlayers = p.getNumber();
+	 
 	 system("cls");
 	 
-	 p.setCol(col);
+	//game
+	 
+	 game g;
 	 
 	 while(play<=slots)
 	 {
 	 	
 	 	t = play%totPlayers;
+	 	cout<<"t="<<t<<endl;
 	 	p.turn(t);
 	 	c = p.getCol();
 	 	
+	 	g.nextPosition(row-1,c-1);
+	 	
+	 	possibleRow = g.getRoow();
+	 	
+	 	//cout<<"\n possibleROw "<<possibleRow;
+	 	
+	 	s = p.getSymbol(t);
+	 	
+	 	//cout<<"\n s = "<<s<<endl;
+	 	
+	 	
+	 	b.fill(possibleRow,c-1,s);  //you need class game to find row and need player to get symbol!
+	 	
+	 	
 	 	//
+	 	//cin.get();
+	 	//system("cls");		 
 	 	
-	 			 
-		  
-	 	
-	 	
-	 	
-	 	cout<<c;
+	 
 	 	play++;
 	 	
 	 }
